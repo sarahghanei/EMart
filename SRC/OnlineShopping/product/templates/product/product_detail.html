@@ -1,0 +1,25 @@
+{% load static %}
+<!--<!DOCTYPE html>-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>جزییات محصول</title>
+</head>
+<body>
+<div>
+    جزییات محصول مورد نظر
+    <br/>
+    {{ product.name }}
+    <br/>
+    {{ product.category}}
+    <br/>
+    {{ product.brand}}
+    <br/>
+    {% if product.image %}
+    <img class="item-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% else %}
+    <i class="far fa-10x fa-building text-muted"></i>
+    {% endif %}
+</div>
+</body>
+</html>

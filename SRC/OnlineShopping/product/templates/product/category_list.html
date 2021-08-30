@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>لیست دسته بندی ها</title>
+</head>
+<body>
+<div>
+    {% for c in categories %}
+    Name : {{ c.name }}
+    <br/>
+    Slug : {{ c.slug }}
+    <br/>
+    {% endfor %}
+</div>
+</body>
+</html>
