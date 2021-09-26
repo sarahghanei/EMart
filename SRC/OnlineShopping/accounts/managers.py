@@ -1,5 +1,4 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,11 +16,11 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
+        # self.model means the model that is related to this manager.
         user = self.model(email=email, **extra_fields)
-        # using make password to hash the password
-        user.password = make_password(password)
+        user.set_password(password)
         user.last_login = timezone.now()
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password, **extra_fields):

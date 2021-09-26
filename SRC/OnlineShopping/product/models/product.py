@@ -53,30 +53,29 @@ class Product(models.Model):
 
     @property
     def final_price(self):
-        if self.get_sale() is not None:
-            return self.get_sale()
-        else:
-            return self.unit_price
+        total = self.unit_price
+        try:
+            if self.cash_code.is_active:
+                cash_dis = self.cash_code.amount
+            else:
+                raise ValidationError('Cash code is not valid!')
+        except:
+            cash_dis = 0
 
-    def get_sale(self):
-        if self.cash_code is not None:
-            return self.unit_price - self.cash_code.amount
-        elif self.percentage_code is not None:
-            return self.unit_price - ((self.percentage_code.percentage * self.unit_price) // 100)
-        else:
-            return None
+        try:
+            if self.percentage_code.is_active:
+                per_dis = self.percentage_code.percentage
+            else:
+                raise ValidationError('Cash code is not valid!')
+        except:
+            per_dis = 0
+        total -= cash_dis
+        total -= ((self.unit_price * per_dis) // 100)
+        return total
 
     def save(self, *args, **kwargs):
         # if not self.slug:
         self.slug = slugify(self.name, allow_unicode=True) + '-' + slugify(self.brand.name, allow_unicode=True)
-        print(self.slug)
-        if self.cash_code:
-            self.percentage_code = None
-        elif self.percentage_code:
-            self.cash_code = None
-        else:
-            self.percentage_code = None
-            self.cash_code = None
         super(Product, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

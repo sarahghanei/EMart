@@ -17,8 +17,8 @@ class CustomUser(AbstractUser):
     """
 
     class Meta:
-        verbose_name = 'کاربر'
-        verbose_name_plural = 'کاربران'
+        verbose_name = 'کاربر کلی'
+        verbose_name_plural = 'کاربران کلی'
 
     GENDER_CHOICES = (
         ('F', 'Female'),
@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
     )
 
     # we want email attribute to be unique and we want to use it as unique identifier
-    email = models.EmailField(unique=True)
+    email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=20, unique=True)
     avatar = models.ImageField(upload_to='accounts/static/accounts/avatars/', null=True, blank=True)
     gender = models.CharField(null=True, blank=True, choices=GENDER_CHOICES, max_length=8)
@@ -48,12 +48,29 @@ class CustomUser(AbstractUser):
     def get_absolute_url(self):
         return reverse("account_detail", kwargs={"slug": self.slug})
 
+    def has_perm(self, perm, obj=None):
+        # for checking specific permission
+        # by default True
+        return True
+
+    def has_module_perms(self, app_label):
+        # access to models of the given app
+        # by default True
+        return True
+
+    def __str__(self):
+        return self.get_full_name()
+
 
 class Customer(CustomUser):
     class Meta:
         verbose_name = 'مشتری'
         verbose_name_plural = 'مشتریان'
         proxy = True
+
+    is_superuser = False
+    is_staff = False
+    is_active = True
 
 
 class Admin(CustomUser):
@@ -62,12 +79,20 @@ class Admin(CustomUser):
         verbose_name_plural = 'مدیران'
         proxy = True
 
+    is_superuser = True
+    is_staff = True
+    is_active = True
+
 
 class Staff(CustomUser):
     class Meta:
         verbose_name = 'کارمند'
         verbose_name_plural = 'کارمندان'
         proxy = True
+
+    is_superuser = False
+    is_staff = True
+    is_active = True
 
 
 class Address(models.Model):
