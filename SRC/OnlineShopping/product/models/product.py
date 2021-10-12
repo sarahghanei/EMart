@@ -26,15 +26,16 @@ class Product(models.Model):
     brand = models.ForeignKey('product.Brand', on_delete=models.CASCADE, related_name='products')
     # labels such as bestseller, new, not available, etc ...
     label = models.CharField(choices=LABEL, max_length=2)
-    image = models.ImageField(upload_to='product/static/product/images/', null=True, blank=True)
+    image = models.ImageField(upload_to='product/static/product/images/%Y/%m/', null=True, blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     is_original = models.BooleanField()
+    available = models.BooleanField(default=True)
     inventory = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     unit_price = models.DecimalField(max_digits=8, decimal_places=2)
     number_sold = models.PositiveIntegerField(default=0, null=True, blank=True)
-    # discount code for this book
+    # discount code for this product
     cash_code = models.ForeignKey('cart.CashDiscount', null=True, on_delete=models.CASCADE, blank=True,
                                   related_name='related_products')
     percentage_code = models.ForeignKey('cart.PercentageDiscount', null=True, on_delete=models.CASCADE,

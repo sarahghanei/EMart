@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django_extensions.db.fields import AutoSlugField
 from django.urls import reverse
 from .managers import CustomUserManager
@@ -8,7 +8,7 @@ from .managers import CustomUserManager
 # Create your models here.
 
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractBaseUser):
     """
         Customized user, which can have 3 roles :
         admin
@@ -28,6 +28,10 @@ class CustomUser(AbstractUser):
 
     # we want email attribute to be unique and we want to use it as unique identifier
     email = models.EmailField(max_length=100, unique=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=20, unique=True)
     avatar = models.ImageField(upload_to='accounts/static/accounts/avatars/', null=True, blank=True)
     gender = models.CharField(null=True, blank=True, choices=GENDER_CHOICES, max_length=8)
@@ -43,7 +47,7 @@ class CustomUser(AbstractUser):
 
     @property
     def full_name(self):
-        return self.get_full_name()
+        return "{} {}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
         return reverse("account_detail", kwargs={"slug": self.slug})
@@ -59,40 +63,11 @@ class CustomUser(AbstractUser):
         return True
 
     def __str__(self):
-        return self.get_full_name()
+        return "{} {}".format(self.first_name, self.last_name)
 
-
-class Customer(CustomUser):
-    class Meta:
-        verbose_name = 'مشتری'
-        verbose_name_plural = 'مشتریان'
-        proxy = True
-
-    is_superuser = False
-    is_staff = False
-    is_active = True
-
-
-class Admin(CustomUser):
-    class Meta:
-        verbose_name = 'مدیر'
-        verbose_name_plural = 'مدیران'
-        proxy = True
-
-    is_superuser = True
-    is_staff = True
-    is_active = True
-
-
-class Staff(CustomUser):
-    class Meta:
-        verbose_name = 'کارمند'
-        verbose_name_plural = 'کارمندان'
-        proxy = True
-
-    is_superuser = False
-    is_staff = True
-    is_active = True
+    @property
+    def is_staff(self):
+        return self.is_admin
 
 
 class Address(models.Model):
@@ -106,7 +81,7 @@ class Address(models.Model):
     street = models.CharField(max_length=20)
     postal_code = models.CharField(max_length=20)
     detail = models.TextField(max_length=2000)
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='addresses')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='addresses')
     # one of the addresses should be the default address
     is_default = models.BooleanField(default=False)
 
