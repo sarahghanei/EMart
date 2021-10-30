@@ -22,11 +22,11 @@ class Product(models.Model):
         ordering = ('created_at',)
 
     name = models.CharField(max_length=50)
-    category = models.ForeignKey('product.Category', on_delete=models.CASCADE, related_name='products')
+    category = models.ManyToManyField('product.Category', related_name='products')
     brand = models.ForeignKey('product.Brand', on_delete=models.CASCADE, related_name='products')
     # labels such as bestseller, new, not available, etc ...
     label = models.CharField(choices=LABEL, max_length=2)
-    image = models.ImageField(upload_to='product/static/product/images/%Y/%m/', null=True, blank=True)
+    image = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     is_original = models.BooleanField()
     available = models.BooleanField(default=True)
@@ -81,7 +81,8 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         # return reverse("product_detail", kwargs={"id": self.id})
-        return reverse("product_detail", kwargs={"slug": self.slug})
+        # return reverse("cart:product_detail", args=[self.slug,])
+        return reverse("cart:product_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return "{} - {} - {}".format(self.name, self.brand, self.category)

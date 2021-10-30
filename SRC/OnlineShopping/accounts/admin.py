@@ -5,6 +5,7 @@ from .forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import Group
 
 
+
 class CustomUserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -23,6 +24,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
     # overriding filter horizontal
     filter_horizontal = ()
+
+
+
 
 
 # register the model and it's model admin to django admin

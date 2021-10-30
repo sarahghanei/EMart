@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'accounts.apps.AccountsConfig',
     'cart.apps.CartConfig',
+    'shop.apps.ShopConfig',
+    # utility packages
+    'sorl.thumbnail',
+
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -79,9 +83,9 @@ WSGI_APPLICATION = 'OnlineShopping.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'online_shop_system',
-        'USER': 'online_shop_user',
-        'PASSWORD': 'onlineshop9776',
+        'NAME': 'emart',
+        'USER': 'emart_user',
+        'PASSWORD': 'emart9776',
         'HOST': 'localhost',
         'PORT': '5432',
     }

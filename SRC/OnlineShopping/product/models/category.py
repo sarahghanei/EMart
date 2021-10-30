@@ -12,6 +12,8 @@ class Category(models.Model):
         ordering = ('name',)
 
     name = models.CharField(max_length=100)
+    sub_category = models.ForeignKey('self', on_delete=models.CASCADE, related_name='subcategories', null=True, blank=True)
+    is_sub = models.BooleanField(default=False)
     description = models.TextField(max_length=1000, null=True, blank=True)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True, editable=False)
     # slug = AutoSlugField(populate_from=['name'], allow_unicode=True, unique=True)
@@ -26,7 +28,8 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         # return reverse("category_detail", kwargs={"id": self.id})
-        return reverse("category_detail", kwargs={"slug": self.slug})
+        # return reverse("category_filter", args=[self.slug,])
+        return reverse("cart:category_filter", kwargs={"slug": self.slug})
 
     def __str__(self):
         return "{}".format(self.name)

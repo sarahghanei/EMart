@@ -12,7 +12,7 @@ class Brand(models.Model):
         ordering = ('name',)
 
     name = models.CharField(max_length=100)
-    logo = models.ImageField(upload_to='product/static/product/images/', null=True, blank=True)
+    logo = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True, editable=False)
     # slug = AutoSlugField(populate_from=['name'], allow_unicode=True, unique=True)
