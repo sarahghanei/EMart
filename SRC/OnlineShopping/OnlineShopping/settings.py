@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'cart.apps.CartConfig',
     'shop.apps.ShopConfig',
+    'orders.apps.OrdersConfig',
     # utility packages
     'sorl.thumbnail',
 
