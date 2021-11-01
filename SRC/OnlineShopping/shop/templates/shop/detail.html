@@ -15,7 +15,7 @@
     {% for item in shop %}
     <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td>{{item.product}}</td>
+        <td>{{item.product.name}}</td>
         <td>{{item.quantity}}</td>
         <td>{{item.price}}</td>
         <td>{{item.total_price}}</td>
@@ -26,6 +26,11 @@
         </td>
     </tr>
     {% endfor %}
+    <tr>
+        <td>Total</td>
+        <td colspan="4"></td>
+        <td>{{ shop.get_total_price }}</td>
+    </tr>
     </tbody>
 </table>
 {% endblock %}

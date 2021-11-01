@@ -57,6 +57,12 @@ class Shop:
             self.shop[product_id]['quantity'] += quantity
         self.save()
 
+    def get_total_price(self):
+        total_price = 0
+        for item in self.shop.values():
+            total_price += Decimal(item['price']) * int(item['quantity'])
+        return total_price
+
     def remove(self, product):
         product_id = str(product.id)
         if product_id in self.shop:
