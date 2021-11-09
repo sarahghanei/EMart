@@ -1,5 +1,5 @@
 from product.models import Product
-from decimal import Decimal
+# from decimal import Decimal
 
 # naming sessions related to the shopping cart
 SHOP_SESSION_ID = 'shop'
@@ -46,7 +46,9 @@ class Shop:
         for item in shop.values():
             # item is the dict for each product
             # price in shop is in the string format, so for calculating we cast it to decimal
-            item['total_price'] = Decimal(item['price']) * item['quantity']
+            # item['total_price'] = Decimal(item['price']) * item['quantity']
+            item['total_price'] = int(item['price']) * item['quantity']
+
             yield item
 
     def add(self, product, quantity):
@@ -60,7 +62,9 @@ class Shop:
     def get_total_price(self):
         total_price = 0
         for item in self.shop.values():
-            total_price += Decimal(item['price']) * int(item['quantity'])
+            # total_price += Decimal(item['price']) * int(item['quantity'])
+            total_price += int(item['price']) * int(item['quantity'])
+
         return total_price
 
     def remove(self, product):
@@ -68,6 +72,12 @@ class Shop:
         if product_id in self.shop:
             del self.shop[product_id]
             self.save()
+
+    def clear(self):
+        # making shopping cart empty
+        # or clear data related to shop part of this session
+        del self.session[SHOP_SESSION_ID]
+        self.save()
 
     def save(self):
         # saving session's changes manually.

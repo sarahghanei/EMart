@@ -33,7 +33,8 @@ class Product(models.Model):
     inventory = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-    unit_price = models.DecimalField(max_digits=8, decimal_places=2)
+    # unit_price = models.DecimalField(max_digits=8, decimal_places=2)
+    unit_price = models.IntegerField()
     number_sold = models.PositiveIntegerField(default=0, null=True, blank=True)
     # discount code for this product
     cash_code = models.ForeignKey('cart.CashDiscount', null=True, on_delete=models.CASCADE, blank=True,
