@@ -2,3 +2,5 @@ INFO 2021-11-15 16:01:46,563 autoreload: Watching for file changes with StatRelo
 INFO 2021-11-15 16:02:41,790 autoreload: /Users/sarahghanei/Desktop/OnlineShop/SRC/OnlineShopping/OnlineShopping/settings.py changed, reloading.
 INFO 2021-11-15 16:02:42,296 autoreload: Watching for file changes with StatReloader
 INFO 2021-11-15 16:02:56,372 signals: Product: Airpods 2 Inventory:8 
+INFO 2021-11-15 16:57:48,887 autoreload: Watching for file changes with StatReloader
+WARNING 2021-11-15 16:57:50,379 log: Not Found: /
